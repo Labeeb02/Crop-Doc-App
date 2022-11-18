@@ -24,8 +24,27 @@ class _CaptureImageState extends State<CaptureImage> {
 
   AppStrings? appStrings;
 
-  void pickImage() async {
-    XFile? pickedImage = await imagePicker.pickImage(source: ImageSource.camera);
+  void pickImage(String crop) async {
+
+    XFile? pickedImage;
+
+    if(crop=="")
+    {
+      pickedImage = await imagePicker.pickImage(source: ImageSource.camera,maxHeight: 256,maxWidth: 256);
+    }
+    else if(crop=="millet_ear")
+    {
+      pickedImage = await imagePicker.pickImage(source: ImageSource.camera,maxHeight: 200,maxWidth: 350);
+    }
+    else if(crop=="millet_leaf")
+    {
+      pickedImage = await imagePicker.pickImage(source: ImageSource.camera,maxHeight: 200,maxWidth: 350);
+    }
+    else if(crop=="tomato")
+    {
+      pickedImage = await imagePicker.pickImage(source: ImageSource.camera,maxHeight: 256,maxWidth: 256);
+    }
+
     if(pickedImage?.path != null) {
       setState(() {
         filePath = pickedImage!.path;
@@ -112,7 +131,7 @@ class _CaptureImageState extends State<CaptureImage> {
               flex: 1,
               child: ElevatedButton(
                 onPressed: () {
-                  pickImage();
+                  pickImage(crop);
                 },
                 style: ElevatedButton.styleFrom(
                     primary: AppColor.buttonColorLight,
@@ -173,7 +192,7 @@ class _CaptureImageState extends State<CaptureImage> {
 
     if(loadedImage == null) {
       loadedImage = placeholderImage;
-      pickImage();
+      pickImage("");
     }
 
     return FutureBuilder(
